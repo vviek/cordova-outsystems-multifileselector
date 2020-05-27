@@ -23,7 +23,8 @@ Supported Platforms:
 	 * If user cancels, promise will be resolved as error.
 	 * If error occurs, promise will be rejected.
 	 */
-	        window.plugins.multiplefileselect.selectfiles(
+	        
+            window.plugins.multiplefileselect.selectfiles(
                     onSuccess, // For Success 
                     onError,    // For Error
                     IsCameraOpen // For Storage or Camera , For camera pass true else pass false
