@@ -1,5 +1,3 @@
-cordova.define("cordova-outsystems-multifileselector.multiplefileselector", function(require, exports, module) {
-
   function MultipleFileSelector() {
   }
   
@@ -18,6 +16,3 @@ cordova.define("cordova-outsystems-multifileselector.multiplefileselector", func
   };
   
   cordova.addConstructor(MultipleFileSelector.install);
-
-  
-});
