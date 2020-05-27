@@ -36,6 +36,7 @@
     </config-file>
 
         <source-file src="src/android/FileSelectorPlugin.java" target-dir="src/org.multiplefileselector" />
+        <source-file src="src/android/ImageModel.java" target-dir="src/org.multiplefileselector" />
          
     </platform>
 	<platform name="ios">
