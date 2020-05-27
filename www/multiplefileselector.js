@@ -12,7 +12,7 @@
       window.plugins = {};
     }
   
-    window.plugins.multiplefileselect = new Notification();
+    window.plugins.multiplefileselect = new MultipleFileSelector();
     return window.plugins.multiplefileselect;
   };
   
