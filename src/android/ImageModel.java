@@ -23,7 +23,6 @@ public class ImageModel {
     }
 
 
-
     public float getFileSize() {
         return fileSize;
     }
