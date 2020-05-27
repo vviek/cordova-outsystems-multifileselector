@@ -37,8 +37,6 @@ Supported Platforms:
                     //Hangle Error
                 }
 
-	
-    
 ## Example Usage
  window.plugins.multiplefileselect.selectfiles(
                     onSuccess, // optional
