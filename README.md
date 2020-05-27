@@ -39,10 +39,8 @@ Supported Platforms:
 
 ## Example Usage
 
-        window.plugins.multiplefileselect.selectfiles(onSuccess
-        ,onError
-        ,false
-                  );
+        window.plugins.multiplefileselect.selectfiles(onSuccess,onError,false);
+        
             function onSuccess(msg) {
                 alert(msg);
             }
