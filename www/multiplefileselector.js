@@ -1,10 +1,11 @@
+cordova.define("cordova-outsystems-multifileselector.multiplefileselector", function(require, exports, module) {
 
   function MultipleFileSelector() {
   }
   
-  MultipleFileSelector.prototype.selectfiles = function (successCallback, errorCallback) {
-  
-   cordova.exec(successCallback, errorCallback, "FileSelectorPlugin", "selectfiles", []);
+  MultipleFileSelector.prototype.selectfiles = function (successCallback, errorCallback,isCamera) {
+
+   cordova.exec(successCallback, errorCallback, "FileSelectorPlugin", "select", [isCamera]);
   };
   
   MultipleFileSelector.install = function () {
@@ -19,3 +20,4 @@
   cordova.addConstructor(MultipleFileSelector.install);
 
   
+});

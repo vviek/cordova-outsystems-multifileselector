@@ -21,6 +21,8 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PermissionHelper;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 import java.io.ByteArrayOutputStream;
@@ -41,38 +43,36 @@ public class FileSelectorPlugin extends CordovaPlugin {
 
     private static final String TAG = "FileSelectorPlugin";
 
-    ArrayList<ImageModel> imageList;
+    private ArrayList<ImageModel> imageList;
 
 
-    String mCurrentPhotoPath;
+    private String mCurrentPhotoPath;
 
 
-    String[] projection = {MediaStore.MediaColumns.DATA};
+    private String[] projection = {MediaStore.MediaColumns.DATA};
     File image;
 
-    boolean IsFromCamera = true;
-    String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    CallbackContext context;
+    private boolean IsFromCamera;
+    private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private CallbackContext callbackContext;
+
     @Override
     public boolean execute(String action, JSONArray args,
                            final CallbackContext callbackContext) {
-
-        Log.e("ActionCalled",":"+action);
-        //context = callbackContext;
+        this.callbackContext = callbackContext;
+        try {
+            IsFromCamera = args.getBoolean(0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         if (action.equalsIgnoreCase("select")) {
             if (hasPermisssion()) {
-
                 init();
-
-
             } else {
-
                 PermissionHelper.requestPermissions(this, 0, permissions);
             }
             return true;
         }
-
-
         return false;
     }
 
@@ -87,12 +87,9 @@ public class FileSelectorPlugin extends CordovaPlugin {
                     takePicture();
                 }
             });
-
-
         } else {
             getPickImageIntent();
         }
-
     }
 
     public void takePicture() {
@@ -132,6 +129,21 @@ public class FileSelectorPlugin extends CordovaPlugin {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 if (mCurrentPhotoPath != null) {
                     addImage(mCurrentPhotoPath, image.length() / 1024f, image.getName());
+
+                    sendResponseToPlugin();
+                } else {
+
+                    try {
+
+                        JSONObject jsonErrorObject = new JSONObject();
+                        jsonErrorObject.put("ErrorCode", "0");
+                        jsonErrorObject.put("ErrorMessage", "File not selected");
+                        callbackContext.error(jsonErrorObject);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else if (requestCode == PICK_IMAGES) {
                 if (data.getClipData() != null) {
@@ -139,21 +151,59 @@ public class FileSelectorPlugin extends CordovaPlugin {
                     for (int i = 0; i < mClipData.getItemCount(); i++) {
                         ClipData.Item item = mClipData.getItemAt(i);
                         Uri uri = item.getUri();
-
                         Cursor returnCursor =
                                 cordova.getActivity().getContentResolver().query(uri, null, null, null, null);
-
                         int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                         int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
                         returnCursor.moveToFirst();
                         float fileSize = returnCursor.getLong(sizeIndex) / 1024f;
-
-
                         getImageFilePath(uri, fileSize, returnCursor.getString(nameIndex));
                     }
+
+                    if (mClipData.getItemCount() == 0) {
+                        try {
+
+                            JSONObject jsonErrorObject = new JSONObject();
+
+                            jsonErrorObject.put("ErrorCode", "0");
+                            jsonErrorObject.put("ErrorMessage", "File not selected");
+                            callbackContext.error(jsonErrorObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+
+                        sendResponseToPlugin();
+                    }
+
+
                 }
+
+
             }
         }
+    }
+
+    private void sendResponseToPlugin() {
+        try {
+
+
+            JSONArray imageData = new JSONArray();
+            for (int i = 0; i < imageList.size(); i++) {
+                imageList.get(i);
+                JSONObject jsonErrorObject = new JSONObject();
+                jsonErrorObject.put("Base64Data", imageList.get(i).getBase64ImageData());
+                jsonErrorObject.put("FileSize", imageList.get(i).getFileSize());
+                jsonErrorObject.put("FileName", imageList.get(i).getFileName());
+                imageData.put(jsonErrorObject);
+            }
+            Log.e("ArraySize", ": " + imageData.length());
+            callbackContext.success(imageData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     // Get image file path
@@ -182,11 +232,9 @@ public class FileSelectorPlugin extends CordovaPlugin {
 
     // add image in selectedImageList and imageList
     public void addImage(String filePath, float fileSize, String fileName) {
-
-        ImageModel imageModel = new ImageModel(filePath, getBase64FromUri(filePath), fileName, fileSize);
+        ImageModel imageModel = new ImageModel(getBase64FromUri(filePath), fileName, fileSize);
         imageList.add(imageModel);
     }
-
 
 
     private String getBase64FromUri(String FilePathUri) {
@@ -216,21 +264,28 @@ public class FileSelectorPlugin extends CordovaPlugin {
     }
 
     public void onRequestPermissionResult(int requestCode, String[] permissions,
-                                          int[] grantResults)
-    {
-        PluginResult result;
+                                          int[] grantResults) {
 
-        if(context != null) {
+
+        if (callbackContext != null) {
             for (int r : grantResults) {
                 if (r == PackageManager.PERMISSION_DENIED) {
                     Log.e(TAG, "Permission Denied!");
-                    result = new PluginResult(PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
-                    context.sendPluginResult(result);
+
+                    try {
+                        JSONObject jsonErrorObject = new JSONObject();
+                        jsonErrorObject.put("ErrorCode", "1");
+                        jsonErrorObject.put("ErrorMessage", PluginResult.Status.ILLEGAL_ACCESS_EXCEPTION);
+                        callbackContext.error(jsonErrorObject);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     return;
                 }
-
             }
             init();
         }
-     }
+    }
 }
