@@ -38,8 +38,8 @@ Supported Platforms:
                 }
 
 	
-    ## Example Usage
-
+    
+## Example Usage
  window.plugins.multiplefileselect.selectfiles(
                     onSuccess, // optional
                     onError,    // optional
