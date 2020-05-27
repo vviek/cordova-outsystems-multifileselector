@@ -1,0 +1,24 @@
+{
+    "name": "cordova-outsystems-multifileselector",
+    "version": "1.0.0",
+    "description": "Multiple file selector cordova plugin.",
+    "cordova": {
+      "id": "cordova-outsystems-multifileselector",
+      "platforms": [
+        "android"
+      ]
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vviek/cordova-outsystems-multifileselector.git"
+    },
+    "keywords": [
+      "multiplefilesellect","cordova","android"
+    ],
+    "author": "Vivek Patel<vivek.patel371@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/vviek/cordova-outsystems-multifileselector/issues"
+    },
+    "homepage": "https://github.com/vviek/cordova-outsystems-multifileselector"
+  }

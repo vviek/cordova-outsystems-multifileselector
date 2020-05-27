@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="cordova-outsystems-multifileselector" version="1.0.0">
+    <name>Multiple file selector</name>
+
+    <description>Multiple file selector cordova plugin .</description>
+    <license>MIT</license>
+
+    <keywords>cordova,android,multiplefilesellect</keywords>
+    <repo>https://github.com/vviek/cordova-outsystems-multifileselector.git</repo>
+    <issue>https://github.com/vviek/cordova-outsystems-multifileselector/issues</issue>
+  
+   
+  
+    <js-module src="www/multiplefileselector.js" name="multiplefileselector">
+        <clobbers target="window.plugins.multiplefileselector" />
+    </js-module>
+  
+    <platform name="android">
+  
+     <config-file target="res/xml/config.xml" parent="/*">
+    <feature name="FileSelectorPlugin">
+        <param
+            name="android-package"
+            value="org.multiplefileselector.FileSelectorPlugin" />
+    </feature>
+     </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+     
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+
+    </config-file>
+
+        <source-file src="src/android/FileSelectorPlugin.java" target-dir="src/org.multiplefileselector" />
+         
+    </platform>
+	<platform name="ios">
+	
+	</platform>
+
+</plugin>
