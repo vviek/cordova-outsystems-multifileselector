@@ -1,4 +1,4 @@
-# ordova-outsystems-multifileselector
+# Cordova-outsystems-multifileselector
 File chooser plugin for Cordova.
 
 Android supported.
