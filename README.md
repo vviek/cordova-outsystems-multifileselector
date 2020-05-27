@@ -38,16 +38,11 @@ Supported Platforms:
                 }
 
 ## Example Usage
- window.plugins.multiplefileselect.selectfiles(
-                    onSuccess, // optional
-                    onError,    // optional
-                    false
-                  );
 
-            function onSuccess(msg) {
-                alert(msg);
-            }
-
-            function onError(msg) {
-                    alert(msg);
-                }
+window.plugins.multiplefileselect.selectfiles(onSuccess,onError,false);
+function onSuccess(msg) {
+alert(msg);
+}
+function onError(msg) {
+alert(msg);
+}
