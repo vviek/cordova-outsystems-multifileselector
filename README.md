@@ -14,7 +14,9 @@ Supported Platforms:
 
 ## API
 
-/**
+
+
+    /**
 	 * Displays native prompt for user to select a file.
 	 *
 	 * @returns Promise containing selected file's raw binary data,
